@@ -19,21 +19,21 @@ const App: React.FC = () => {
   const { theme, loading } = useSelector(state => state.global);
   const dispatch = useDispatch();
 
-  const setTheme = (dark = true) => {
+  const setTheme = (light = true) => {
     dispatch(
       setGlobalState({
-        theme: dark ? 'dark' : 'light',
+        theme: light ?  'light':'dark' ,
       }),
     );
   };
 
   /** initial theme */
   useEffect(() => {
-    setTheme(theme === 'dark');
+    setTheme(theme === 'light');
 
     // watch system theme change
     if (!localStorage.getItem('theme')) {
-      const mql = window.matchMedia('(prefers-color-scheme: dark)');
+      const mql = window.matchMedia('(prefers-color-scheme: light)');
 
       function matchMode(e: MediaQueryListEvent) {
         setTheme(e.matches);
