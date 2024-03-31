@@ -1,11 +1,10 @@
 import type { FC } from 'react';
 
-import { LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
+import { GithubOutlined, LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
 import { Dropdown, Layout, theme as antTheme, Tooltip } from 'antd';
 import { createElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
 import Avator from '@/assets/header/avator.jpeg';
 import { ReactComponent as EnUsSvg } from '@/assets/header/en_US.svg';
 import { ReactComponent as LanguageSvg } from '@/assets/header/language.svg';
@@ -77,8 +76,9 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
     <Header className="layout-page-header bg-2" style={{ backgroundColor: token.token.colorBgContainer }}>
       {device !== 'MOBILE' && (
         <div className="logo" style={{ width: collapsed ? 80 : 200 }}>
-          <img src={LogoSvg} alt="" style={{ marginRight: collapsed ? '2px' : '20px' }} onClick={()=>{window.open('https://bioinfo.online/pipline/index.html', '_blank');
-}} />
+          <img src={LogoSvg} alt="" style={{ marginRight: collapsed ? '2px' : '20px' }} onClick={() => {
+            window.open('https://bioinfo.online/pipline/index.html', '_blank');
+          }} />
           {/* <img src={AntdSvg} alt="" /> */}
         </div>
       )}
@@ -87,6 +87,9 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
           <span id="sidebar-trigger">{collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}</span>
         </div>
         <div className="actions">
+          <span>
+            <GithubOutlined id="language-change" onClick={() => { window.open('https://github.com/bioproj/pipeline-proj-ui', '_blank') }} />
+          </span>
           <Tooltip
             title={formatMessage({
               id: theme === 'dark' ? 'gloabal.tips.theme.lightTooltip' : 'gloabal.tips.theme.darkTooltip',
