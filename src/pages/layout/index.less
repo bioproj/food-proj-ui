@@ -1,5 +1,6 @@
 .layout-page {
   height: 100%;
+
   &-header {
     padding: 0 !important;
     display: flex;
@@ -21,6 +22,7 @@
       justify-content: space-between;
       align-items: center;
     }
+
     .logo {
       height: 64px;
       width: 200px;
@@ -29,20 +31,24 @@
       justify-content: center;
       align-items: center;
       z-index: 9;
+
       img {
-        width: 30px;
-        height: 30px;
+        width: 8rem;
+        // height: 50px;
       }
     }
   }
+
   &-sider {
     box-sizing: border-box;
     margin-bottom: 10px;
   }
+
   &-content {
     display: flex;
     flex-direction: column;
     flex: 1;
+
     > :nth-child(1) .ant-tabs-bar {
       padding: 6px 0 0;
     }
@@ -52,6 +58,7 @@
       overflow: auto;
       padding: 6px;
       box-sizing: border-box;
+
       .innerText {
         padding: 24px;
         border-radius: 2px;
@@ -61,22 +68,25 @@
       }
     }
   }
+
   &-footer {
     text-align: center;
     padding: 14px 20px;
     font-size: 12px;
   }
+
   .actions {
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 
-    > * {
+    >* {
       margin-left: 30px;
       height: 100%;
       display: flex;
       align-items: center;
+
       .notice {
         display: block;
         display: flex;
@@ -88,9 +98,11 @@
       }
     }
   }
+
   .user-action {
     cursor: pointer;
   }
+
   .user-avator {
     margin-right: 8px;
     width: 40px;
@@ -107,12 +119,14 @@ body[theme-mode='dark'] {
 .layout-page-sider-menu {
   border-right: none !important;
 }
+
 .ant-menu-inline-collapsed {
   width: 79px !important;
 }
 
 .notice-description {
   font-size: 12px;
+
   &-datetime {
     margin-top: 4px;
     line-height: 1.5;
@@ -138,7 +152,8 @@ body[theme-mode='dark'] {
   right: 32px;
   bottom: 102px;
   cursor: pointer;
-  > span {
+
+  >span {
     display: block;
     text-align: center;
     background: #fff;
@@ -154,6 +169,7 @@ body[theme-mode='dark'] {
 
 .theme-color-content {
   display: flex;
+
   .theme-color-block {
     width: 20px;
     height: 20px;
@@ -164,6 +180,7 @@ body[theme-mode='dark'] {
     border-radius: 2px;
     cursor: pointer;
     border-radius: 2px;
+
     &:last-child {
       margin-right: 0;
     }

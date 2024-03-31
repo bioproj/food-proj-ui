@@ -24,6 +24,9 @@ const RadioCardsPage = lazy(() => import(/* webpackChunkName: "radio-cards'"*/ '
 const BusinessBasicPage = lazy(() => import(/* webpackChunkName: "basic-page" */ '@/pages/business/basic'));
 const BusinessWithSearchPage = lazy(() => import(/* webpackChunkName: "with-search" */ '@/pages/business/with-search'));
 const BusinessWithAsidePage = lazy(() => import(/* webpackChunkName: "with-aside" */ '@/pages/business/with-aside'));
+
+const WorkflowPage = lazy(() => import(/* webpackChunkName: "workflow" */ '@/pages/application/workflow'));
+
 const BusinessWithRadioCardsPage = lazy(
   () => import(/* webpackChunkName: "with-aside" */ '@/pages/business/with-radio-cards'),
 );
@@ -45,6 +48,9 @@ const routeList: RouteObject[] = [
       {
         path: 'dashboard',
         element: <WrapperRouteComponent element={<Dashboard />} titleId="title.dashboard" />,
+      },  {
+        path: 'workflow',
+        element: <WrapperRouteComponent element={<WorkflowPage />} titleId="title.workflow" />,
       },
       {
         path: 'documentation',

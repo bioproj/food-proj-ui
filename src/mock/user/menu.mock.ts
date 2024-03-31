@@ -13,6 +13,15 @@ const mockMenuList: MenuList = [
     path: '/dashboard',
   },
   {
+    code: 'Workflow',
+    label: {
+      zh_CN: '生信流程',
+      en_US: 'Workflow',
+    },
+    icon: 'documentation',
+    path: '/workflow',
+  },
+  {
     code: 'documentation',
     label: {
       zh_CN: '文档',

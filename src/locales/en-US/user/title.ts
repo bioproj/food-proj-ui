@@ -1,6 +1,7 @@
 export const enUS_title = {
   'title.login': 'Login',
   'title.dashboard': 'Dashboard',
+  'title.workflow': 'Workflow',
   'title.documentation': 'Documentation',
   'title.guide': 'Guide',
   'title.permission.route': 'Route Permission',
