@@ -1,14 +1,14 @@
 import type { MyPageTableOptions } from '@/components/business/page';
-import type { BuniesssUser } from '@/interface/business';
+import type { Application } from '@/interface/business';
 import type { FC } from 'react';
 
 import { Space, Tag } from 'antd';
 
-import { getBusinessUserList } from '@/api/business';
+import { applicationPageApi } from '@/api/application';
 import MyButton from '@/components/basic/button';
 import MyPage from '@/components/business/page';
 
-const tableColums: MyPageTableOptions<BuniesssUser> = [
+const tableColums: MyPageTableOptions<Application> = [
   {
     title: 'Name',
     children: [
@@ -45,7 +45,7 @@ const tableColums: MyPageTableOptions<BuniesssUser> = [
 ];
 
 const BusinessBasicPage: FC = () => {
-  return <MyPage pageApi={getBusinessUserList} tableOptions={tableColums}></MyPage>;
+  return <MyPage pageApi={applicationPageApi} tableOptions={tableColums}></MyPage>;
 };
 
 export default BusinessBasicPage;

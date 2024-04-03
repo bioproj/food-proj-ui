@@ -6,3 +6,12 @@ export interface BuniesssUser {
   address: string;
   tags: string[];
 }
+
+export interface Application {
+  key: string;
+  firstName: string;
+  lastName: string;
+  age: number;
+  address: string;
+  tags: string[];
+}

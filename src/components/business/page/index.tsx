@@ -6,7 +6,7 @@ import type { PageData } from '@/interface';
 import type { ColumnsType } from 'antd/es/table/interface';
 
 import { css } from '@emotion/react';
-import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useState, useMemo } from 'react';
 
 import MyTable from '@/components/core/table';
 import { useStates } from '@/utils/use-states';
@@ -14,6 +14,7 @@ import { useStates } from '@/utils/use-states';
 import MyAside from '../aside';
 import MyRadioCards from '../radio-cards';
 import MySearch from '../search';
+// import {FormModal} from '../form/Modal';
 import MyTabs from '../tabs';
 
 interface SearchApi {
@@ -25,6 +26,7 @@ type ParseDataType<S> = S extends (params?: any) => MyResponse<PageData<infer T>
 export type MyPageTableOptions<S> = ColumnsType<S>;
 export interface PageProps<S> {
   searchRender?: React.ReactNode;
+  formRender?: React.ReactNode;
   pageApi?: S;
   pageParams?: object;
   tableOptions?: MyPageTableOptions<ParseDataType<S>>;
@@ -37,6 +39,12 @@ export interface PageProps<S> {
   asideTreeItemRender?: MyAsideProps['titleRender'];
   tabsData?: MyTabsOption[];
   tabsValue?: string | number;
+  onRowChange?: (selectedRowKeys: React.Key[], selectedRows: ParseDataType<S>[]) => void;
+  showAside?: boolean
+  searchParams?: Record<string, any>
+  tableColums?: MyPageTableOptions<S>
+  onDelete?: () => void
+  tableColumsFlag?: string
 }
 
 export interface RefPageProps {
@@ -49,6 +57,7 @@ const BasePage = <S extends SearchApi>(props: PageProps<S>, ref: React.Ref<RefPa
     pageApi,
     pageParams,
     searchRender,
+    formRender,
     tableOptions,
     tableRender,
     asideKey,
@@ -59,12 +68,17 @@ const BasePage = <S extends SearchApi>(props: PageProps<S>, ref: React.Ref<RefPa
     radioCardsValue,
     tabsData,
     tabsValue,
+    onRowChange,
+    showAside,
+    searchParams
   } = props;
+  // const [searchParamsInfo, setSearchParamsInfo] = useState<Record<string, any>>();
+  // setSearchParamsInfo(searchParams)
   const [pageData, setPageData] = useStates<PageData<ParseDataType<S>>>({
-    pageSize: 20,
-    pageNum: 1,
-    total: 0,
-    data: [],
+    size: 20,
+    number: 1,
+    count: 0,
+    content: [],
   });
 
   const [asideCheckedKey, setAsideCheckedKey] = useState(asideValue);
@@ -74,59 +88,91 @@ const BasePage = <S extends SearchApi>(props: PageProps<S>, ref: React.Ref<RefPa
       setAsideCheckedKey(asideData[0].key);
     }
   }, [asideData]);
+  // const criteriaVos = Object.entries(params).reduce((acc: any[], [key, value]) => {
+  //   if (value !== null && value !== undefined && value !== '') {
+  //     acc.push({ 'name':key,'searchType':'EQUAL','searchVal':value });
+  //   }
+  //   return acc;
+  // }, []);
+  // const searchParamsObj = useMemo(() => (searchParams), [searchParams]);
 
   const getPageData = useCallback(
     async (params: Record<string, any> = {}) => {
       if (asideKey && !asideCheckedKey) return;
+      // if(searchParams){
+      //   params={...searchParams}
+      // }
+      // debugger
+      // console.log(searchParams)
+      const criteriaVos = Object.entries(params).reduce((acc: any[], [key, value]) => {
+        if (value !== null && value !== undefined && value !== '') {
+          acc.push({ 'name': key, 'searchType': 'EQUAL', 'searchVal': value });
+        }
+        return acc;
+      }, []);
 
+      // debugger
       if (pageApi) {
         const obj = {
-          ...params,
+          // ...params,
+          criteriaVos,
           ...pageParams,
-          pageSize: pageData.pageSize,
-          pageNum: pageData.pageNum,
+          size: pageData.size,
+          number: pageData.number,
           [asideKey!]: asideCheckedKey,
         };
         const res = await pageApi(obj);
 
-        if (res.status) {
-          setPageData({ total: res.result.total, data: res.result.data });
+        if (res.code) {
+          setPageData({ count: res.data.count, content: res.data.content });
         }
       }
     },
-    [pageApi, pageParams, pageData.pageSize, pageData.pageNum, asideKey, asideCheckedKey],
+    [pageApi, JSON.stringify(searchParams), pageParams, pageData.size, pageData.number, asideKey, asideCheckedKey],
   );
-
   useEffect(() => {
-    getPageData();
+
+    getPageData(searchParams);
   }, [getPageData]);
 
   const onSearch = (searchParams: Record<string, any>) => {
+    // debugger
+    // setPageData({ number:1 });
     getPageData(searchParams);
+
   };
 
   const onSelectAsideTree: MyAsideProps['onSelect'] = ([key]) => {
     setAsideCheckedKey(key);
   };
 
-  const onPageChange = (pageNum: number, pageSize?: number) => {
-    setPageData({ pageNum });
-
-    if (pageSize) {
-      setPageData({ pageSize });
+  const onPageChange = (number: number, size?: number) => {
+    setPageData({ number });
+    if (size) {
+      setPageData({ size });
     }
   };
 
   useImperativeHandle(ref, () => ({
     setAsideCheckedKey,
     load: (data?: object) => getPageData(data),
+    reload: () => getPageData(searchParams),
   }));
 
+  // const onRowChangea =  (selectedRowKeys: React.Key[], selectedRows: ParseDataType<S>[]) => {
+  //   console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+  // }
   return (
     <div css={styles}>
       {tabsData && <MyTabs className="tabs" options={tabsData} defaultValue={tabsData[0].value || tabsValue} />}
       <div className="tabs-main">
-        {asideData && (
+        {/* {formRender && (
+          <FormModal className="search" onSearch={onSearch}>
+            {formRender}
+          </FormModal>
+        )} */}
+
+        {showAside && asideData && (
           <MyAside
             options={asideData}
             selectedKeys={asideCheckedKey ? [asideCheckedKey] : undefined}
@@ -146,17 +192,25 @@ const BasePage = <S extends SearchApi>(props: PageProps<S>, ref: React.Ref<RefPa
           {tableOptions && (
             <div className="table">
               <MyTable
-                height="100%"
-                dataSource={pageData.data}
+                // height="100%"
+                dataSource={pageData.content}
                 columns={tableOptions}
+                rowKey={record => record.id}
                 pagination={{
-                  current: pageData.pageNum,
-                  pageSize: pageData.pageSize,
-                  total: pageData.total,
+                  current: pageData.number,
+                  pageSize: pageData.size,
+                  total: pageData.count,
                   onChange: onPageChange,
                 }}
+                rowSelection={
+                  {
+                    type: 'radio',
+                    columnWidth: 48,
+                    onChange: onRowChange
+                  }
+                }
               >
-                {tableRender?.(pageData.data)}
+                {tableRender?.(pageData.content)}
               </MyTable>
             </div>
           )}

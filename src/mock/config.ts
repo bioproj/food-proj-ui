@@ -19,20 +19,20 @@ interface PageParams {
 export function intercepter<T>(data: T): Response<T>;
 export function intercepter<T extends any[]>(data: T, page: PageParams): Response<PageData<T>>;
 
-export function intercepter(data: any, page?: PageParams) {
+export function intercepter(data: any, page?: PageParams){
   if (page) {
     const result = getTableData(Number(page.pageNum), Number(page.pageSize), data);
 
     return {
-      status: true,
-      message: '成功',
+      code: 200,
+      msg: '成功',
       result,
     };
   } else {
     return {
-      status: true,
-      message: '成功',
-      result: data,
+      code: 200,
+      msg: '成功',
+      data: data,
     };
   }
 }

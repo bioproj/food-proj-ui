@@ -17,3 +17,6 @@
 + 📜 项目介绍: <http://bioinfo.online/pipline/index.html>
 + 🌐 项目预览: <http://yun.bioinfo.online>
 + 💡项目贡献: <https://bioinfo.online/articleList/20242274568.html>
+
+## 开发
++ 测试代理是否正常： <http://localhost:8889/pipeline/hello>

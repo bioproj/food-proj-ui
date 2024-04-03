@@ -15,10 +15,10 @@ export default defineConfig({
   server: {
     port: 8889,
     proxy: {
-      '/api': {
-        target: `http://localhost:${process.env.PORT}/api`,
+      '/pipeline': {
+        target: `http://localhost:30001`,
         // changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, ''),
+        // rewrite: path => path.replace(/^\/api/, ''),
       },
     },
   },
